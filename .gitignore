@@ -3,6 +3,9 @@ arena
 *.o
 *.exe
 
+# Cmake build directories
+build/
+
 # Vendored static libraries (optional to ignore, but best practice to keep repo lean)
 lib/libraylib.a
 
