@@ -1,0 +1,10 @@
+# Compiled executables and object files
+arena
+*.o
+*.exe
+
+# Vendored static libraries (optional to ignore, but best practice to keep repo lean)
+lib/libraylib.a
+
+# VS Code workspace settings
+.vscode/
