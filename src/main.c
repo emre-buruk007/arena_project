@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "stdio.h"
 
 int main(void) {
 
@@ -14,7 +15,7 @@ int main(void) {
     camera.fovy = 20.0f;
     camera.projection = CAMERA_ORTHOGRAPHIC;
 
-    float cameraSpeed = 40.0;
+    float cameraSpeed = 4.0;
 
     SetTargetFPS(60);
 
