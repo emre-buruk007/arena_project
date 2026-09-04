@@ -19,20 +19,21 @@ int main(void) {
 
     SetTargetFPS(60);
 
-    int scrollSpeed = 4;
+    int scrollSpeed = 1;
 
     while(!WindowShouldClose()) {
 
         //camera movement
-        if (GetMouseX() <= 30) {
+        //TODO: camera doesn't go directly down, instead goes diagonally, same with all directions.
+        if (GetMouseX() <= 30 && GetMouseX() > 5) {
             camera.position.x -= GetFrameTime() * cameraSpeed;
             camera.target.x -= GetFrameTime() * cameraSpeed;
         }
-        else if(GetMouseX() >= GetScreenWidth()-30) {
+        else if(GetMouseX() >= GetScreenWidth() - 30) {
             camera.position.x += GetFrameTime() * cameraSpeed;
             camera.target.x += GetFrameTime() * cameraSpeed;
         }
-        else if(GetMouseY() <= 30) {
+        else if(GetMouseY() <= 30 && GetMouseX() > 5) {
             camera.position.z -= GetFrameTime() * cameraSpeed;
             camera.target.z -= GetFrameTime() * cameraSpeed;
         }
@@ -40,6 +41,11 @@ int main(void) {
             camera.position.z += GetFrameTime() * cameraSpeed;
             camera.target.z += GetFrameTime() * cameraSpeed;
         };
+
+        //camera zoom
+        if(GetMouseWheelMove() != 0) {
+            camera.fovy -= scrollSpeed * GetMouseWheelMove();
+        }
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -51,7 +57,7 @@ int main(void) {
         EndMode3D();
 
         DrawText("We successfully printed on the screen", 10, 10, 20, DARKGRAY);
-        DrawText(TextFormat("Cam Z: %0.2f | Mouse X: %d | Screen Width: %d", camera.position.z, GetMouseX(), GetScreenWidth()), 10, 40, 20, DARKGRAY);
+        DrawText(TextFormat("Cam Z: %0.2f | Mouse X: %d | Mouse Y: %d | Screen Width: %d", camera.position.z, GetMouseX(), GetMouseY(), GetScreenWidth()), 10, 40, 20, DARKGRAY);
         EndDrawing();
     }
 
