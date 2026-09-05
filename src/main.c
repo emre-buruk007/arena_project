@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "stdio.h"
+#include "camera.h"
 
 int main(void) {
 
@@ -23,47 +24,8 @@ int main(void) {
 
     while(!WindowShouldClose()) {
 
-        //camera movement, the Z axis manipulation is to counteract the isometric view maths.
-        // move camera left, increase z to counteract 45 degree angle
-        if (GetMouseX() <= 30 && GetMouseX() > 5) {
-            camera.position.x -= GetFrameTime() * cameraSpeed;
-            camera.target.x -= GetFrameTime() * cameraSpeed;
-            camera.position.z += GetFrameTime() * cameraSpeed;
-            camera.target.z += GetFrameTime() * cameraSpeed;
-        }
-        // move camera right
-        else if(GetMouseX() >= GetScreenWidth() - 30) {
-            camera.position.x += GetFrameTime() * cameraSpeed;
-            camera.target.x += GetFrameTime() * cameraSpeed;
-            camera.position.z -= GetFrameTime() * cameraSpeed;
-            camera.target.z -= GetFrameTime() * cameraSpeed;
-        }
-        // move camera up
-        else if(GetMouseY() <= 30 && GetMouseX() > 5) {
-            camera.position.z -= GetFrameTime() * cameraSpeed;
-            camera.target.z -= GetFrameTime() * cameraSpeed;
-            camera.position.x -= GetFrameTime() * cameraSpeed;
-            camera.target.x -= GetFrameTime() * cameraSpeed;
-        }
-        // move camera down
-        else if(GetMouseY() >= GetScreenHeight() - 30) {
-            camera.position.z += GetFrameTime() * cameraSpeed;
-            camera.target.z += GetFrameTime() * cameraSpeed;
-            camera.position.x += GetFrameTime() * cameraSpeed;
-            camera.target.x += GetFrameTime() * cameraSpeed;
-        };
-
-        //camera zoom
-        // nested if is a clamp so can't zoom out too much or zoom in too much
-        if(GetMouseWheelMove() != 0) { 
-            camera.fovy -= scrollSpeed * GetMouseWheelMove();
-            if (camera.fovy < 5) {
-                camera.fovy = 5;
-            }
-            if (camera.fovy > 60) {
-                camera.fovy = 60;
-            }
-        }
+        UpdateMyCamera(&camera);
+        
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
