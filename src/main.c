@@ -23,28 +23,46 @@ int main(void) {
 
     while(!WindowShouldClose()) {
 
-        //camera movement
-        //TODO: camera doesn't go directly down, instead goes diagonally, same with all directions.
+        //camera movement, the Z axis manipulation is to counteract the isometric view maths.
+        // move camera left, increase z to counteract 45 degree angle
         if (GetMouseX() <= 30 && GetMouseX() > 5) {
             camera.position.x -= GetFrameTime() * cameraSpeed;
             camera.target.x -= GetFrameTime() * cameraSpeed;
+            camera.position.z += GetFrameTime() * cameraSpeed;
+            camera.target.z += GetFrameTime() * cameraSpeed;
         }
+        // move camera right
         else if(GetMouseX() >= GetScreenWidth() - 30) {
             camera.position.x += GetFrameTime() * cameraSpeed;
             camera.target.x += GetFrameTime() * cameraSpeed;
-        }
-        else if(GetMouseY() <= 30 && GetMouseX() > 5) {
             camera.position.z -= GetFrameTime() * cameraSpeed;
             camera.target.z -= GetFrameTime() * cameraSpeed;
         }
+        // move camera up
+        else if(GetMouseY() <= 30 && GetMouseX() > 5) {
+            camera.position.z -= GetFrameTime() * cameraSpeed;
+            camera.target.z -= GetFrameTime() * cameraSpeed;
+            camera.position.x -= GetFrameTime() * cameraSpeed;
+            camera.target.x -= GetFrameTime() * cameraSpeed;
+        }
+        // move camera down
         else if(GetMouseY() >= GetScreenHeight() - 30) {
             camera.position.z += GetFrameTime() * cameraSpeed;
             camera.target.z += GetFrameTime() * cameraSpeed;
+            camera.position.x += GetFrameTime() * cameraSpeed;
+            camera.target.x += GetFrameTime() * cameraSpeed;
         };
 
         //camera zoom
-        if(GetMouseWheelMove() != 0) {
+        // nested if is a clamp so can't zoom out too much or zoom in too much
+        if(GetMouseWheelMove() != 0) { 
             camera.fovy -= scrollSpeed * GetMouseWheelMove();
+            if (camera.fovy < 5) {
+                camera.fovy = 5;
+            }
+            if (camera.fovy > 60) {
+                camera.fovy = 60;
+            }
         }
 
         BeginDrawing();
@@ -58,6 +76,7 @@ int main(void) {
 
         DrawText("We successfully printed on the screen", 10, 10, 20, DARKGRAY);
         DrawText(TextFormat("Cam Z: %0.2f | Mouse X: %d | Mouse Y: %d | Screen Width: %d", camera.position.z, GetMouseX(), GetMouseY(), GetScreenWidth()), 10, 40, 20, DARKGRAY);
+        DrawText(TextFormat("Cam fovy: %0.2f", camera.fovy), 10, 70, 20, DARKGRAY);
         EndDrawing();
     }
 
